@@ -24,7 +24,11 @@ To start it again use:
 ```
 java -jar path/to/server/wiremock-standalone-2.4.1.jar --port 3000
 ```
-Once it is running, start your UPS setting `-Dcustom.aerogear.fcm.push.host` parameter with the fake URL:
+Once it is running, add a FCM backend response, like:
+```
+curl -X POST --data '{ "request": { "url": "/fcm/send", "method": "POST" }, "response": { "status": 200, "fixedDelayMilliseconds": 20000, "jsonBody": {"multicast_id": 108,"success": 1,"failure": 0,"canonical_ids": 0,"results": [{ "message_id": "1:08"}]}, "headers": {"Content-Type": "application/json"}}}' http://localhost:3000/__admin/mappings/new
+```
+Next, start your UPS setting `-Dcustom.aerogear.fcm.push.host` parameter with the fake URL:
 ```
 path/to/jboss/bin/standalone.sh -b 0.0.0.0 --server-config=standalone-full.xml -Dcustom.aerogear.fcm.push.host=http://localhost:3000/fcm/send
 ```
