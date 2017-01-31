@@ -16,7 +16,7 @@ TestRunner.start(appId, aliases);
 
 function getAliasesFromCSV() {
     // TODO
-    return ["josemi-app-0", "josemi-app-1", "josemi-app-2"];
+    return ["josemi-app"];
 }
 
 // TODO: add some concurrency
