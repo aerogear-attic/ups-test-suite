@@ -1,6 +1,6 @@
 "use strict";
 
-const API = require("./src/rhmap-api");
+const Utils = require("./src/utils");
 const TestRunner = require("./src/test-runner");
 
 const appId = process.argv[2];
@@ -11,12 +11,6 @@ if (!appId || !csvPath) {
     process.exit(1);
 }
 
-const aliases = getAliasesFromCSV();
-TestRunner.start(appId, aliases);
-
-function getAliasesFromCSV() {
-    // TODO
-    return ["josemi-app"];
-}
-
-// TODO: add some concurrency
+Utils.getAliasesFromCSV(csvPath, aliases => {
+    TestRunner.start(appId, aliases);
+});
