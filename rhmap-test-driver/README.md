@@ -6,7 +6,7 @@ Having NPM and nodeJS installed, first download all dependencies:
 ```
 $ npm install
 ```
-Then start the test-runner passing your credentials as arguments:
+Then start the test-runner passing your application ID and the CSV's path as arguments:
 ```
-$ node app/index.js <username> <password> <path/to/devices.csv>
+$ node app/index.js <appId> <path/to/devices.csv>
 ```
