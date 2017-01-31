@@ -2,25 +2,46 @@
 
 const API = require("./rhmap-api");
 
-const DELAY = 6500;
-
 class TestRunner {
 
-    static start(appId, aliases) {
+    constructor() {
+        // The ID of the application that owns the target aliases.
+        this.appId;
+        // The time between one request and another
+        this.delay;
+    }
+
+    /**
+     * The URL of the node backend
+     */
+    set endPoint(endPoint) {
+        if (endPoint.lastIndexOf('/') === endPoint.length - 1) {
+            endPoint.slice(-1);
+        }
+        this.api = new API(endPoint);
+    }
+
+    /**
+     * It sends a request to the backend endpoint for each alias with a fix delay between each one
+     */
+    start(aliases) {
+        if (!this.api || !this.appId) {
+            throw new Error("An endpoint URL and an application ID must be provided");
+        }
 
         const message = "Hello from rhmap-test-driver!";
 
         aliases.forEach((alias, i) => {
             setTimeout(() => {
                 console.log(`Sending notification to ${alias}`);
-                API.sendNotificationToAlias(message, appId, alias)
+                this.api.sendNotificationToAlias(message, this.appId, alias)
                     .on("error", err => {
                         console.log(`[${alias}] FAILED: ${err}`)
                     })
                     .on("response", res => {
                         console.log(`[${alias}] SUCCESS`)
                     });;
-            }, DELAY * i);
+            }, this.delay * i);
         });
     }
 }
