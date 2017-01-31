@@ -6,7 +6,13 @@ Having NPM and nodeJS installed, first download all dependencies:
 ```
 $ npm install
 ```
-Then start the test-runner passing your application ID and the CSV's path as arguments:
+Then start the test-runner passing the necessary arguments:
 ```
-$ node app/index.js <appId> <path/to/devices.csv>
+$ node index.js <endpoint url> <appId> <path/to/devices.csv> <delay>
 ```
+
+|---------------------|-------------------------------|
+|     endpoint url    | URL to your backend cloud app |
+|         appId       | The ID of the application that owns the devices |
+| path/to/devices.csv | The path to the CSV file that has all tokens |
+|         delay       | The time in ms that will separate each request to the endpoint |
