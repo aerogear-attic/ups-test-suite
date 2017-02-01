@@ -34,10 +34,10 @@ class TestRunner {
                 console.log(`Sending notification to ${alias}`);
                 this.api.sendNotificationToAlias(this.appId, alias)
                     .on("error", err => {
-                        console.log(`[${alias}] FAILED: ${err}`)
+                        console.log(`[${alias}] ERROR: ${err}`)
                     })
                     .on("response", res => {
-                        console.log(`[${alias}] SUCCESS`)
+                        console.log(`[${alias}] RESPONSE: ${res.statusCode}`)
                     });;
             }, this.delay * i);
         });
