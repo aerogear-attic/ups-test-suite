@@ -2,28 +2,42 @@
 
 const Utils = require("./src/utils");
 const TestRunner = require("./src/test-runner");
-const commander = require("commander");
+const argv = require("yargs");
 
 const DEFAULT_DELAY = 6500;
 
-commander
-    .version("1.0.0")
-    .usage("node index.js [options]")
-    .option("-e, --endpoint <url>", "The backend url")
-    .option("-a, --app-id <id>", "The ID of the application that owns the target aliases")
-    .option("-c, --csv <path>", "The path to the CSV path containing the aliases")
-    .option("-d, --delay <ms>", "The delay between each request", parseInt, DEFAULT_DELAY)
-    .parse(process.argv)
+let args = argv
+    .usage("Usage: node index.js [options]")
+    .example("$0 -e http://example.com/backend -a asdf12134 -c ./devices.csv -d 5000", "")
 
-if (!commander.endpoint || !commander.appId || !commander.csv) {
-    commander.help();
-    process.exit(1);
-}
+    .alias("e", "endPoint")
+    .nargs("e", 1)
+    .describe("e", "The backend url")
+
+    .alias("a", "appId")
+    .nargs("a", 1)
+    .describe("a", "The ID of the application that owns the target aliases")
+
+    .alias("c", "csv")
+    .nargs("c", 1)
+    .describe("c", "The path to the CSV path containing the aliases")
+
+    .alias("d", "delay")
+    .nargs("d", 1)
+    .describe("d", "The delay between each request")
+    
+    .check((argv, aliases) => {
+        return !argv.delay || parseInt(argv.delay);
+    })
+
+    .demandOption(["e", "a", "c"])
+    .help("h")
+    .alias("h", "help")
+    .argv;
 
 const testRunner = new TestRunner();
-testRunner.endPoint = commander.endpoint;
-testRunner.appId = commander.appId;
-testRunner.delay = commander.delay;
-testRunner.message = "Blah blah blah";
+testRunner.endPoint = args.endPoint;
+testRunner.appId = args.appId;
+testRunner.delay = args.delay || DEFAULT_DELAY;
 
-Utils.getAliasesFromCSV(commander.csv, aliases => testRunner.start(aliases));
+Utils.getAliasesFromCSV(args.csv, aliases => testRunner.start(aliases));
