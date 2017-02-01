@@ -1,6 +1,8 @@
 "use strict";
 
 const API = require("./rhmap-api");
+const async = require("async");
+const Utils = require("./utils");
 
 class TestRunner {
 
@@ -29,18 +31,18 @@ class TestRunner {
             throw new Error("An endpoint URL and an application ID must be provided");
         }
 
-        aliases.forEach((alias, i) => {
-            setTimeout(() => {
-                console.log(`Sending notification to ${alias}`);
-                this.api.sendNotificationToAlias(this.appId, alias)
-                    .on("error", err => {
-                        console.log(`[${alias}] ERROR: ${err}`)
-                    })
-                    .on("response", res => {
-                        console.log(`[${alias}] RESPONSE: ${res.statusCode}`)
-                    });;
-            }, this.delay * i);
-        });
+        const startTime = Date.now();
+
+        Utils.forEachAsyncWithInterval(aliases, alias => {
+            console.log(`Sending notification to ${alias} at ${Date.now() - startTime}`);
+            this.api.sendNotificationToAlias(this.appId, alias)
+                .on("error", err => {
+                    console.log(`[${alias}] ERROR: ${err}`)
+                })
+                .on("response", res => {
+                    console.log(`[${alias}] RESPONSE: ${res.statusCode}`)
+                });
+        }, this.delay);
     }
 }
 

@@ -20,6 +20,15 @@ function getAliasesFromCSV(csvPath, callback) {
     stream.pipe(csvStream);
 }
 
+function forEachAsyncWithInterval(collection, func, delay) {
+    collection.forEach((item, i) => {
+        setTimeout(() => {
+            func(item);
+        }, delay * i);
+    });
+}
+
 module.exports = {
-    getAliasesFromCSV: getAliasesFromCSV
+    getAliasesFromCSV: getAliasesFromCSV,
+    forEachAsyncWithInterval: forEachAsyncWithInterval
 }
