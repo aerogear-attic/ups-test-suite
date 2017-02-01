@@ -9,6 +9,8 @@ class TestRunner {
         this.appId;
         // The time between one request and another
         this.delay;
+        // Optional message to send in the notification
+        this.message;
     }
 
     /**
@@ -29,7 +31,7 @@ class TestRunner {
             throw new Error("An endpoint URL and an application ID must be provided");
         }
 
-        const message = "Hello from rhmap-test-driver!";
+        const message = this.message || "Hello from rhmap-test-driver!";
 
         aliases.forEach((alias, i) => {
             setTimeout(() => {

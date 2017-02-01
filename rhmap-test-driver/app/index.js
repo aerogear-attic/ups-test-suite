@@ -2,27 +2,28 @@
 
 const Utils = require("./src/utils");
 const TestRunner = require("./src/test-runner");
+const commander = require("commander");
 
-const endPoint = process.argv[2];
-const appId = process.argv[3];
-const csvPath = process.argv[4];
-const rawDelay = process.argv[5];
+const DEFAULT_DELAY = 6500;
 
-if (!endPoint || !appId || !csvPath || !rawDelay) {
-    console.log("usage: node index.js <endpoint url> <appId> <path/to/devices.csv> <delay>");
-    process.exit(1);
-}
+commander
+    .version("1.0.0")
+    .usage("node index.js [options]")
+    .option("-e, --endpoint <url>", "The backend url")
+    .option("-a, --app-id <id>", "The ID of the application that owns the target aliases")
+    .option("-c, --csv <path>", "The path to the CSV path containing the aliases")
+    .option("-d, --delay <ms>", "The delay between each request", parseInt, DEFAULT_DELAY)
+    .parse(process.argv)
 
-const delay = Number.parseInt(rawDelay);
-
-if (!delay || delay < 1) {
-    console.log("Missing argument: 'delay' must be a positive integer.");
+if (!commander.endpoint || !commander.appId || !commander.csv) {
+    commander.help();
     process.exit(1);
 }
 
 const testRunner = new TestRunner();
-testRunner.endPoint = endPoint;
-testRunner.appId = appId;
-testRunner.delay = delay;
+testRunner.endPoint = commander.endpoint;
+testRunner.appId = commander.appId;
+testRunner.delay = commander.delay;
+testRunner.message = "Blah blah blah";
 
-Utils.getAliasesFromCSV(csvPath, aliases => testRunner.start(aliases));
+Utils.getAliasesFromCSV(commander.csv, aliases => testRunner.start(aliases));
