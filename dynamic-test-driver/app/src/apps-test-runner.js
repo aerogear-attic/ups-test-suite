@@ -18,7 +18,7 @@ class AppsTestRunner extends TestRunner {
 
         const test = app => {
             console.log(`Sending message to all devices of "${app.name}" [${app.pushApplicationID}]`);
-            API.sendNotificationToApp(this.message, app, this.options)
+            this.API.sendNotificationToApp(this.message, app, this.options)
                 .then(res => console.log(`[${app.pushApplicationID}] RESPONSE: ${JSON.stringify(res)}`))
                 .catch(err => console.log(`[${app.pushApplicationID}] ERROR: ${err}`));
         };

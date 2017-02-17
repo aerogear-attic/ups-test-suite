@@ -3,9 +3,11 @@
 const adminClient = require("unifiedpush-admin-client");
 const senderClient = require("unifiedpush-node-sender");
 
-const BASE_URL = "http://localhost:8080/ag-push";
-
 class API {
+
+    constructor(endpoint) {
+        this.endpoint = endpoint;
+    }
 
     /**
      * Returns the list of applications
@@ -13,13 +15,13 @@ class API {
      * @argument {string} password Account's password for authentication
      * @returns {Promise} A promise containing all the applications in user's account.
      */
-    static getApplications(username, password) {
+    getApplications(username, password) {
         const settings = {
             username,
             password
         };
 
-        return adminClient(BASE_URL, settings)
+        return adminClient(this.endpoint, settings)
             .then(client => client.applications.find());
     }
 
@@ -30,9 +32,9 @@ class API {
      * @argument {Options} options An instance of Options class containing some optional parameters.
      * @returns {Promise} An empty promise if the notification was sent.
      */
-    static sendNotificationToApp(message, app, options) {
+    sendNotificationToApp(message, app, options) {
         const settings = {
-            url: BASE_URL,
+            url: this.endpoint,
             applicationId: app.pushApplicationID,
             masterSecret: app.masterSecret
         }

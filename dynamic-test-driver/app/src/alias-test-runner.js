@@ -23,7 +23,7 @@ class AliasTestRunner extends TestRunner {
         const test = alias => {
             this.options.alias = alias;
             console.log(`Sending message to 1 alias [${alias}]`);
-            API.sendNotificationToApp(this.message, this.app, this.options)
+            this.API.sendNotificationToApp(this.message, this.app, this.options)
                 .then(res => console.log(`[${alias}] RESPONSE: ${JSON.stringify(res)}`))
                 .catch(err => console.log(`[${alias}] ERROR: ${err}`));
         };

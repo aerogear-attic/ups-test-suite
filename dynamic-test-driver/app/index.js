@@ -9,10 +9,12 @@ const async = require("async");
 
 const DEFAULT_DELAY = 1000;
 const DEFAULT_INSTANCES = 1;
+const DEFAULT_ENDPOINT = "http://localhost:8080/ag-push";
 
 const args = argv
     .usage("Usage: node index.js [[user credentials] | [app credentials]] [options]")
     .example("$0 -u admin -p 123", "")
+    .example("$0 -u admin -p 123 -e http://localhost:8080/ag-push", "")
     .example("$0 -a 123abc456def -m secret -c ./devices.csv", "")
     .example("$0 -a 123abc456def -m secret -c ./devices.csv -d 2000 -i 10", "")
 
@@ -23,6 +25,11 @@ const args = argv
     .alias("p", "password")
     .nargs("p", 1)
     .describe("p", "Aerogear account password")
+
+    .alias("e", "endPoint")
+    .nargs("e", 1)
+    .default("e", DEFAULT_ENDPOINT)
+    .describe("e", "The UPS instance url")
 
     .alias("a", "pushApplicationID")
     .nargs("a", 1)
@@ -86,7 +93,8 @@ if (args.csv) {
         });
 
 } else {
-    API.getApplications(args.username, args.password)
+    new API(args.endPoint)
+        .getApplications(args.username, args.password)
         .then(apps => {
             async.each(testRunners, testRunner => testRunner.start(apps))
         });
