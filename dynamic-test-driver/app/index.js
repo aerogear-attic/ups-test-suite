@@ -86,7 +86,7 @@ if (args.csv) {
         });
 
 } else {
-    API.getApplications(username, password)
+    API.getApplications(args.username, args.password)
         .then(apps => {
             async.each(testRunners, testRunner => testRunner.start(apps))
         });

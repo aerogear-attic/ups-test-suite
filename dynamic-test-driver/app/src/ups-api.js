@@ -31,8 +31,6 @@ class API {
      * @returns {Promise} An empty promise if the notification was sent.
      */
     static sendNotificationToApp(message, app, options) {
-        console.log(`Sending message to "${app.name}" {${app.pushApplicationID}}`)
-
         const settings = {
             url: BASE_URL,
             applicationId: app.pushApplicationID,

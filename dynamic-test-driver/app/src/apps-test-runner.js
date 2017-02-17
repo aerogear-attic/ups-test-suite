@@ -17,9 +17,10 @@ class AppsTestRunner extends TestRunner {
         console.log(`Total apps: ${apps.length}`);
 
         const test = app => {
+            console.log(`Sending message to all devices of "${app.name}" [${app.pushApplicationID}]`);
             API.sendNotificationToApp(this.message, app, this.options)
-                .then(res => console.log(`RESPONSE: ${res}`))
-                .catch(err => console.log(`ERROR: ${err.toString()}`))
+                .then(res => console.log(`[${app.pushApplicationID}] RESPONSE: ${JSON.stringify(res)}`))
+                .catch(err => console.log(`[${app.pushApplicationID}] ERROR: ${err}`));
         };
 
         Utils.forEachAsyncWithInterval(apps, test, this.delay);
