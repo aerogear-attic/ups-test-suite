@@ -40,7 +40,26 @@ class API {
         }
 
         return senderClient(settings)
-            .then(client => client.sender.send(message, options))
+            .then(client => client.sender.send(message, options));
+    }
+
+    /**
+    * Sends a push notification to an application
+    * @argument {Array} messages An array of objects containing both Message and Options: {Message, Options}
+    * @argument {Message} message An instance of Message class containing all information.
+    * @argument {Options} options An instance of Options class containing some optional parameters.
+    * @argument {Application} app The application that will be target of the notification
+    * @returns {Promise} An empty promise if the notification was sent.
+    */
+    sendNotificationsToApp(messages, app) {
+        const settings = {
+            url: this.endpoint,
+            applicationId: app.pushApplicationID,
+            masterSecret: app.masterSecret
+        }
+
+        return senderClient(settings)
+            .then(client => client.sender.sendBatch(messages));
     }
 }
 

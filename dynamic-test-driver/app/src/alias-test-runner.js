@@ -4,8 +4,6 @@ const API = require("./ups-api");
 const Utils = require("./utils");
 const TestRunner = require("./test-runner");
 
-const DELAY = 1000;
-
 class AliasTestRunner extends TestRunner {
 
     constructor(args) {
